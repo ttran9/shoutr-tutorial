@@ -22,7 +22,6 @@ class ShoutsController < ApplicationController
     params.require(:shout).require(:content).permit!
   end
 
-
   def redirect_options_for shout
     if shout.persisted?
       { notice: "Shouted successfully" }

@@ -1,8 +1,7 @@
 module ShoutsHelper
-
   def shout_form_for(content_type)
+    # url below uses polymorphic URL because content_type is just a class so we are instantiating a new instance.
     form_for(Shout.new, url: content_type.new) do |form|
-      form.hidden_field(:content_type, value: content_type) +
       form.fields_for(:content) { |content_form| yield(content_form) } +
       form.submit("Shout!")
     end
