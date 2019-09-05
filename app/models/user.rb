@@ -7,9 +7,20 @@ class User < ApplicationRecord
   has_many :likes
   has_many :liked_shouts, through: :likes, source: :shout
 
-  #table to follow the relationship where the user table points to itself.
-  has_many :following_relationships, foreign_key: :follower_id
-  has_many :followed_users, through: :following_relationships
+  # table to follow the relationship where the user table points to itself.
+  # so when we use the foreign key we don't want to use the user_id but instead the follower_id
+  has_many :followered_user_relationships,
+           foreign_key: :follower_id,
+           class_name: "FollowingRelationship",
+           dependent: :destroy
+  has_many :followed_users, through: :followered_user_relationships
+
+  # since this is a different direction we need to reference a different foreign key to find the followers.
+  has_many :follower_relationships,
+           foreign_key: :followed_user_id,
+           class_name: "FollowingRelationship",
+           dependent: :destroy
+  has_many :followers, through: :follower_relationships
 
   def follow(user)
     followed_users << user
