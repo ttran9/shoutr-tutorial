@@ -1,15 +1,15 @@
 class ShoutSearchQuery
-  def initialize(term:, scope: Shout.all)
+  def initialize(term:)
     @term = term
   end
 
   def to_relation
-    scope.
+    Shout.
         joins("LEFT JOIN text_shouts ON content_type= 'TextShout' AND content_id = text_shouts.id").
         where("text_shouts.body LIKE ?", "%#{term}%")
   end
 
   private
 
-  attr_reader :term, :scope
+  attr_reader :term
 end
